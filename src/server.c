@@ -156,7 +156,7 @@ int handle_message(int client)
         list_for_each_safe(pos, n, &client_list) {
             tmp_node = list_entry(pos, client_info, list);
             if(tmp_node && (tmp_node->sock_fd != client)) {
-                RSLT_CHECK(ret,send(tmp_node->sock_fd, message, BUF_SIZE, 0));
+                RSLT_CHECK(ret, send(tmp_node->sock_fd, message, BUF_SIZE, 0));
            }
         }
     }
