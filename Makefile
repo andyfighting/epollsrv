@@ -20,7 +20,7 @@ $(MODULE_OBJS) : %.o : %.d
 	$(MAKE) -f $<
 	
 $(MODULE_DEPS) : $(MODULE_BIN_DIR)/%.d : src/%.c
-	@$(CC) $(MODULE_MM) $(CFLAGS) $(MODULE_INC_DIR) $< -o $@
+	@$(CC) -MM $(CFLAGS) $(MODULE_INC_DIR) $< -o $@
 	@echo '	$(CC) $(CFLAGS) $(MODULE_INC_DIR) -c $< -o $(patsubst %.d, %.o, $@)' >> $@ 
 
 install:

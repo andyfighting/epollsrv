@@ -1,4 +1,3 @@
-#include "ldrlog.h"
 #include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -7,6 +6,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdarg.h>
+#include "srvlog.h"
 
 
 static FILE *fp_log = NULL;

@@ -19,5 +19,10 @@
 			} while(0)
 
 #define FREE(x) do{if(x) free(x);}while(0)
+#define SERVER_HOST "192.168.40.85"
+#define SERVER_PORT 27188
+#define EPOLL_SIZE  10000
+#define EPOLL_TIMEOUT -1
+
 
 #endif
