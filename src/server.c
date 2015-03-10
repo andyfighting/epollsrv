@@ -126,40 +126,40 @@ int main(int argc, char *argv[])
 	close(listen_fd);
 	close(epoll_fd);
 
-    close_log();
-    return 0;
+    	close_log();
+	return 0;
 }
 
 int handle_message(int client)
 {
-    char buf[BUF_SIZE] = {0};
-    char message[BUF_SIZE] = {0};
-    int len = 0, ret;
-    client_info *tmp_node = NULL;
-    struct list_head *pos,*n;
+	char buf[BUF_SIZE] = {0};
+	char message[BUF_SIZE] = {0};
+	int len = 0, ret;
+	client_info *tmp_node = NULL;
+	struct list_head *pos,*n;
 
-    RSLT_CHECK(len, recv(client, buf, BUF_SIZE, 0));
-    fprintf(stdout, "recv msg : %s | from %d.\n", buf, client);
+	RSLT_CHECK(len, recv(client, buf, BUF_SIZE, 0));
+	fprintf(stdout, "recv msg : %s | from %d.\n", buf, client);
 
-    if(len == 0) {
-        RET_CHECK(close(client));
-        list_for_each_safe(pos, n, &client_list) {
-        	tmp_node = list_entry(pos, client_info, list);
-        	if(client == tmp_node->sock_fd) {
-        		list_del(pos);
-        		free_client_info(tmp_node);
+	if(len == 0) {
+		RET_CHECK(close(client));
+        	list_for_each_safe(pos, n, &client_list) {
+        		tmp_node = list_entry(pos, client_info, list);
+        		if(client == tmp_node->sock_fd) {
+        			list_del(pos);
+        			free_client_info(tmp_node);
+        		}
         	}
-        }
-    }
-    else {
-        snprintf(message, BUF_SIZE, "%d %s", client, buf);
-        list_for_each_safe(pos, n, &client_list) {
-            tmp_node = list_entry(pos, client_info, list);
-            if(tmp_node && (tmp_node->sock_fd != client)) {
-                RSLT_CHECK(ret, send(tmp_node->sock_fd, message, BUF_SIZE, 0));
-           }
-        }
-    }
-
-    return len;
+    	}
+	else {
+        	snprintf(message, BUF_SIZE, "%d %s", client, buf);
+        	list_for_each_safe(pos, n, &client_list) {
+            		tmp_node = list_entry(pos, client_info, list);
+            		if(tmp_node && (tmp_node->sock_fd != client)) {
+                		RSLT_CHECK(ret, send(tmp_node->sock_fd, message, BUF_SIZE, 0));
+           		}
+        	}
+    	}
+    	
+	return len;
 }
