@@ -53,8 +53,8 @@ int main(int argc, char *argv[])
 	char msg[BUF_SIZE] = {0};
 	int epoll_fd;
 	int client, ret, events_count, i;
-    int reuse_on = 1;
-    struct linger so_linger;
+	int reuse_on = 1;
+	struct linger so_linger;
 
 	/*time tracker*/
 	clock_t start;
@@ -67,22 +67,22 @@ int main(int argc, char *argv[])
 	struct epoll_event ev,events[EPOLL_SIZE];
 	ev.events = EPOLLIN | EPOLLET;
 
-    /*open log*/
-    open_log(argc, argv);
+	/*open log*/
+	open_log(argc, argv);
 
-    INIT_LIST_HEAD(&client_list);
+	INIT_LIST_HEAD(&client_list);
 
 	/*initial socket fd*/
 	RSLT_CHECK(listen_fd, socket(PF_INET, SOCK_STREAM, 0));
-    setsockopt(listen_fd, SOL_SOCKET, SO_REUSEADDR, (char *)&reuse_on, sizeof(reuse_on));
+	setsockopt(listen_fd, SOL_SOCKET, SO_REUSEADDR, (char *)&reuse_on, sizeof(reuse_on));
 
-    /*set socket fd linger timeout*/
-    so_linger.l_onoff = 1;
+	/*set socket fd linger timeout*/
+	so_linger.l_onoff = 1;
 	so_linger.l_linger = 5;
 	setsockopt(listen_fd, SOL_SOCKET, SO_LINGER, &so_linger, sizeof(so_linger));
 
 	RET_CHECK(bind(listen_fd, (struct sockaddr *)&srv_addr, sizeof(srv_addr)));
-    set_nonblocking(listen_fd);
+	set_nonblocking(listen_fd);
 	RET_CHECK(listen(listen_fd, 1));
 
 	/*epoll standard api*/
@@ -105,14 +105,14 @@ int main(int argc, char *argv[])
 				/*add new connect to client list*/
 				client_node = alloc_client_info();
 				if(client_node) {
-                    client_node->sock_fd = client;
+                			client_node->sock_fd = client;
 					list_add_tail(&(client_node->list), &client_list);
 				}
 
 				/*return message to client*/
 				bzero(msg, BUF_SIZE);
 				ret = snprintf(msg, BUF_SIZE, "%s, Your client ID : %d.\n", "Welcome to connect server.", client);
-                ldr_log("send msg : %s\n", msg);
+                		ldr_log("send msg : %s\n", msg);
 
 				RSLT_CHECK(ret, send(client, msg, BUF_SIZE, 0));
 			}
